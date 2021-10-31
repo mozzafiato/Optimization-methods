@@ -6,22 +6,22 @@ Gradient descent
 
 import numpy as np
 
-def calculate_mse(e):
+def calculate_mse(b, A, x):
     """Calculate the mean squared error for vector e."""
-    # ***************************************************
-    # INSERT YOUR CODE HERE
-    # TODO: compute mean squared error
-    # ***************************************************
-    raise NotImplementedError
+    # computing the prediction
+    y_pred = np.dot(A, x)
+    # subtract the differences
+    diff = np.subtract(y_pred, b)
+    # return MSE
+    return np.square(diff).mean() / 2
 
 def compute_gradient(b, A, x):
     """Compute the gradient."""
-    # ***************************************************
-    # INSERT YOUR CODE HERE
-    # TODO: compute gradient and objective
-    # ***************************************************
-
-    return grad, err
+    # computing the prediction
+    h = np.dot(A, x)
+    #  compute gradient
+    grad = 2 * np.dot(A.T, (h - b)) / len(b)
+    return grad
 
 def gradient_descent(b, A, initial_x, max_iters, gamma):
     """Gradient descent algorithm."""
@@ -31,15 +31,15 @@ def gradient_descent(b, A, initial_x, max_iters, gamma):
     x = initial_x
     for n_iter in range(max_iters):
         # ***************************************************
-        # INSERT YOUR CODE HERE
-        # TODO: compute gradient and objective function
+        # compute gradient and objective function
         # ***************************************************
-        raise NotImplementedError
+        grad = compute_gradient(b, A, x)
+        obj = calculate_mse(b, A, x)
         # ***************************************************
-        # INSERT YOUR CODE HERE
-        # TODO: update x by a gradient descent step
+        # update x by a gradient descent step
         # ***************************************************
-        raise NotImplementedError
+        x = x - (gamma * grad)
+        
         # store x and objective function value
         xs.append(x)
         objectives.append(obj)
