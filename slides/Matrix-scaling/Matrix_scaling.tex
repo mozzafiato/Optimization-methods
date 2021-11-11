@@ -13,8 +13,12 @@
 
 \begin{frame}
   \frametitle{Introduction}
-  \textbf{given:} a matrix $A \in \R^{m\times n}_+$, vectors $r \in \R_{++}^m$ and $c \in \R^n_{++}$\\
-  \textbf{find:} diagonal matrices $X$ and $Y$ such that for $B = XAY$ it holds:
+  \textbf{given:} a matrix $A \in \R^{m\times n}_{\ge0}$, vectors $r \in \R_{>0}^m$ and $c \in \R^n_{>0}$\\
+  \textbf{find:} nonneg.\ diagonal matrices $X$ and $Y$ such that for
+  \begin{equation}
+    B = XAY
+  \end{equation}
+  it holds that:
   \begin{equation}
     B \mathbbm{1}_n = r \quad \text{and} \quad B^T \mathbbm{1}_m = c
   \end{equation}
@@ -25,10 +29,11 @@
   \end{equation}
 
   \begin{block}{}
+    \centering
     In this case $A$ is called $(r,c)$-scalable.
   \end{block}
   \onslide<2->{%
-    If $\Vert r \Vert_1 \neq \Vert c \Vert_2$ this is not possible.
+    If $\Vert r \Vert_1 \neq \Vert c \Vert_1$ this is not possible.
   }
 \end{frame}
 
@@ -62,7 +67,7 @@
   \begin{block}{\textbf{Application:} Ill conditioned linear system $Az = b$.}
     Can multiply both sides by $X$  and substitute $z= Yv$ to get instead
     \begin{equation}
-      XAz = X
+      XAY v = X b
     \end{equation}
   \end{block}
 \end{frame}
@@ -81,7 +86,7 @@
       \end{bmatrix}
     \end{equation}
   \end{minipage}
-  \begin{minipage}{0.25\textwidth}
+  \begin{minipage}{0.35\textwidth}
     \begin{figure}[ht]
       \centering
       \includegraphics[width=\textwidth]{bipartite-graph.png}
@@ -89,17 +94,17 @@
     \end{figure}
   \end{minipage}
 
-  \onslide<2->{%
     \begin{definition}
-      A \textbf{matching} is a set of edges without common vertices.
+      \begin{itemize}
+        \item A \textbf{matching} is a set of edges without common vertices.
+        \item A \textbf{perfect matching} is a matching which covers all vertices.
+      \end{itemize}
     \end{definition}
-    % Say something about applications of matching like:
-    % - marriage theorem
-    % - hitchcock transport problem
-    \begin{definition}
-      A \textbf{perfect matching} is a matching which covers all vertices.
-    \end{definition}
-  }
+    Applications:
+    \begin{itemize}
+      \item marriage problem
+      \item Hitchcock transport problem
+    \end{itemize}
 \end{frame}
 
 \begin{frame}
@@ -110,8 +115,8 @@
     Recall:
     \begin{equation}
       \begin{aligned}
-        \text{(determinant)} \quad \det A = \sum_{\sigma} \sign(\sigma) \prod_{i=1}^n a_i \sigma(i) \\
-        \text{(permanent)} \quad \perm A = \sum_{\sigma} \prod_{i=1}^n a_i \sigma(i)
+        &\text{(determinant)} \quad \det A = \sum_{\sigma} \sign(\sigma) \prod_{i=1}^n a_{i,\sigma(i)}  \\
+        &\text{(permanent)} \quad \perm A = \sum_{\sigma} \prod_{i=1}^n a_{i,\sigma(i)}
       \end{aligned}
     \end{equation}
   \end{block}
@@ -131,7 +136,7 @@
   \frametitle{Lower bounding the permanent}
   % This notion also appears in optimal transport
   \begin{definition}
-    A matrix $A \in \R^{m\times n}_+$ is called \textbf{doubly stochastic}, if sum of every row and every column is $1$.
+    A matrix $A \in \R^{m\times n}_{\ge0}$ is called \textbf{doubly stochastic}, if sum of every row and every column is $1$.
   \end{definition}
 
   \begin{block}{van der Waerden (1926) conjectured}
@@ -141,29 +146,18 @@
     \end{equation}
   \end{block}
   \begin{equation}
-   \text{Is tight for} A = \begin{bmatrix}
+   \text{Is tight for } A = \begin{bmatrix}
       1/n & \cdots & 1/n \\
       \vdots & \ddots & 1/n \\
       1/n & \dots & 1/n
     \end{bmatrix}
   \end{equation}
-  Proved independently by Jegortschow and Falikman in '80 / '81.
+  Proved in 1980.
 \end{frame}
 
 
-% do we use this at all?
 \begin{frame}
-  \frametitle{Upper bounding the permanent}
-  \begin{block}{Bregman-Minc}
-    For $(0,1)$-matrices
-    \begin{equation}
-      \perm A \le \prod_{i=1}^n {(r_i !)}^{1/r_i} \quad \text{where $r_i := \Vert A_{i,:} \Vert$}
-    \end{equation}
-  \end{block}
-\end{frame}
-
-\begin{frame}
-  \frametitle{Matrix scaling to approx.\ permanent}
+  \frametitle{Matrix scaling to approximate the permanent}
   \begin{block}{}
     If a $(0, 1)$-matrix $A$ can be scaled to be doubly stochastic, i.e.\ it is $\left(\mathbbm{1}, \mathbbm{1}\right)$-scalable, then
     we can apply lower bound
@@ -190,7 +184,7 @@
     \label{eq:grad-original-formulation}
     \begin{aligned}
       \nabla_x g(x,y) = Ay - \frac{r}{x} \\
-      \nabla_y g(x,y) = A^T x - \frac{c}{y}
+      \nabla_y g(x,y) = A^T x - \frac{c}{y}.
     \end{aligned}
   \end{equation}
 \end{frame}
@@ -202,13 +196,13 @@
   \begin{equation}
     f(\xi, \eta) = \sum_{i,j} a_{i,j} e^{\xi_i + \eta_j} - \langle r, \xi \rangle - \langle c, \eta \rangle
   \end{equation}
-  which is \emph{convex}. It's gradient is given by
+  which is \textbf{\emph{convex}}. It's gradient is given by
   \begin{equation}
     \label{eq:grad-convex-reformulation}
     \frac{\partial f}{\partial \xi_i} = \sum_{j=1}^{n} a_{i,j} e^{\xi_i + \eta_j} - r_i
   \end{equation}
-  Easy to see that the optimality condition of~\eqref{eq:grad-convex-reformulation} and~\eqref{eq:grad-original-formulation} agree.
-  Implies that even the nonconvex function only has \emph{global} minimizers.
+  Easy to see that the optimality condition of~\eqref{eq:grad-convex-reformulation} and~\eqref{eq:grad-original-formulation} agree.\\
+  $\Rightarrow$ the nonconvex function only has \emph{global} minimizers.
 \end{frame}
 
 \begin{frame}
@@ -241,39 +235,36 @@
   \begin{equation}
     g(x,y) = \langle x, A y \rangle - \langle r, \log x \rangle - \langle c, \log y \rangle
   \end{equation}
-  \onslide<2->{%
-    \begin{block}{alternating minimiziation}
-      Given a problem
-      \begin{equation}
-        \begin{aligned}
-          &\min_{x,y} \phi(x,y)\\
-          x_{k+1} &= \argmin_x \phi(x,y_k) \\
-          y_{k+1} &= \argmin_y \phi(x_{k+1}, y)
-        \end{aligned}
-      \end{equation}
-    \end{block}
-    makes sense as long as the subproblems are easy (e.g. convex).
-  }
-  \begin{equation}
-    g(x,y) = \langle x, A y \rangle - \langle r, \log x \rangle - \langle c, \log y \rangle
-  \end{equation}
-  \begin{equation}
-    \text{opt. cond.\ for $x$} \quad Ay - \frac{r}{x} = 0
-    \text{opt. cond.\ for $y$} \quad Ay - \frac{c}{y} = 0
-  \end{equation}
+  \vspace{-0.5cm}
+  \begin{block}{alternating minimization}
+    Given a problem
+    \begin{equation}
+      \min_{x,y} \phi(x,y)
+    \end{equation}
+    repeat:
+    \begin{align}
+      x_{k+1} &= \argmin_x \phi(x,y_k) \\
+      y_{k+1} &= \argmin_y \phi(x_{k+1}, y).
+    \end{align}
+  \end{block}
+    Makes sense as long as the \textcolor{blue}{subproblems are easy} (e.g. convex).
+  \begin{align}
+    &\text{opt. cond.\ for $x$:} \quad Ay - \frac{r}{x} = 0 \\
+    &\text{opt. cond.\ for $y$:} \quad A^T x - \frac{c}{y} = 0
+  \end{align}
 \end{frame}
 
 
 % change this to algorithmx package
 \begin{frame}
-  \frametitle{}
+  \frametitle{Sinkhorn's Algorithm}
 
   \begin{block}{Sinkhorn '60}
     Given $(x_0, y_0)$, for $k=1,\dots$
     \begin{equation}
       \begin{aligned}
         x_{k+1}&= \frac{r}{A y_k} \\
-        y_{k+1}&= \frac{r}{A x_{k+1}} \\
+        y_{k+1}&= \frac{c}{A x_{k+1}} \\
       \end{aligned}
     \end{equation}
   \end{block}
