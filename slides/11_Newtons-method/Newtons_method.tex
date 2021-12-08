@@ -108,7 +108,7 @@
 
     \item \textbf{$d$-dimensional case:} Newtons methods for minimizing convex $f: \R^d \to \R$:
           \begin{equation}
-            x_{k+1} = x_k - \nabla^2 f(x_k) \nabla f(x_k).
+            x_{k+1} = x_k - {\nabla^2 f(x_k)}^{-1} \nabla f(x_k).
           \end{equation}
   \end{itemize}
 \end{frame}
@@ -129,7 +129,7 @@
  \begin{block}{}
   Newton's methods \textbf{adapts} to the local geometry of $f$ at $x_k$ \\
  \end{block}
-  $\rightarrow$ \textit{no need for choosing a stepsize}.
+  $\rightarrow$ \textit{no need to choose a stepsize}.
 \end{frame}
 
 \begin{frame}
@@ -140,8 +140,8 @@
   \end{equation}
   is called \textit{nondegenerate} if $M$ is invertible.
   \begin{itemize}
-    \item $x^* := M^{-1}q$ is the unique solution of $\nabla f(x) = 0$
-    \item $x^*$ is the unique global minimum if $f$ is convex
+    \item $x^* := M^{-1}q$ is the unique solution of $\nabla f(x) = 0$.
+    \item $x^*$ is the unique global minimum if $f$ is convex.
   \end{itemize}
   \begin{lemma}[\textcolor{gray}{arbitrary $x_0$}]%
     On nondegenerate quadratic functions, Newtons method yields $x_1=x^*$.
@@ -149,46 +149,49 @@
   \begin{proof}
     We have $\nabla f(x) = Mx -q$ and $\nabla^2 f(x) = M$. Therefore
     \begin{equation}
-      x_1 = x_0 - \nabla^2 f(x_0) \nabla f(x_0) = x_0 - M^{-1}(M x_0 - q) = M^{-1}q = x^*. \qed\qedhere
+      x_1 = x_0 - {\nabla^2 f(x_0)}^{-1} \nabla f(x_0) = x_0 - M^{-1}(M x_0 - q) = M^{-1}q = x^*. \qed\qedhere
     \end{equation}
   \end{proof}
 \end{frame}
 
-\begin{frame}
-  \frametitle{Affine Invariance}
-  Newton’s method is \textcolor{blue}{affine invariant}
-  (invariant under any invertible affine transformation):
-  Denote the Newton step for $h$ by
-  \begin{equation}
-    N_h(x) := x - {\nabla^2 h }^{-1} \nabla h(x).
-  \end{equation}
-  \begin{lemma}%
-    Let $f: \R^d \to \R$ be twice differentiable, $A \in \R^{d \times d}$ an invertible matrix and $b \in \R^d$.
-    \begin{equation}
-      g(x) = Ax + b.
-    \end{equation}
-    Then
-    \begin{equation}
-      N_{f \circ g} = g^{-1} \circ N_f \circ g
-    \end{equation}
-  \end{lemma}
-\end{frame}
+% \begin{frame}
+%   \frametitle{Affine Invariance}
+%   Newton’s method is \textcolor{blue}{affine invariant}
+%   (invariant under any invertible affine transformation):
+%   Denote the Newton step for $h$ by
+%   \begin{equation}
+%     N_h(x) := x - {\nabla^2 h }^{-1} \nabla h(x).
+%   \end{equation}
+%   \begin{lemma}%
+%     Let $f: \R^d \to \R$ be twice differentiable, $A \in \R^{d \times d}$ an invertible matrix and $b \in \R^d$.
+%     \begin{equation}
+%       g(x) = Ax + b.
+%     \end{equation}
+%     Then
+%     \begin{equation}
+%       N_{f \circ g} = g^{-1} \circ N_f \circ g
+%     \end{equation}
+%   \end{lemma}
+% \end{frame}
 
-\begin{frame}
-  \frametitle{}
-  \begin{figure}[ht]
-    \centering
-    \includegraphics[width=\textwidth,height=\textheight,keepaspectratio]{newton_aff_invariance}
-    % \caption{\label{fig:label} }
-  \end{figure}
-  Gradient descent suffers if coordinates are at different scales; Newton's method doesn't.
-\end{frame}
+% \begin{frame}
+%   \frametitle{}
+%   \begin{figure}[ht]
+%     \centering
+%     \includegraphics[width=\textwidth,height=\textheight,keepaspectratio]{newton_aff_invariance}
+%     % \caption{\label{fig:label} }
+%   \end{figure}
+%   Gradient descent suffers if coordinates are at different scales; Newton's method doesn't.
+% \end{frame}
 
 
 \begin{frame}
   \frametitle{Minimizing the second-order Taylor approximation}
   Alternative interpretation of Newton's method:\\
-  Minimize (local) \textcolor{blue}{quadratic model} of $f$.
+  \begin{block}{}
+    \center
+    Minimize (local) \textcolor{blue}{quadratic model} of $f$.
+  \end{block}
   \begin{lemma}%
     Let $f$ be convex, twice differentiable and $\nabla^2 f(x) \succ 0$. Then $x_{k+1}$ resulting from \textbf{Newton's step} satisfies
     \begin{equation}
@@ -200,7 +203,7 @@
 
 \begin{frame}
   \frametitle{Local Convergence}
-  We will prove:\\
+  \textcolor{gray}{We will prove:}\\
   Under suitable conditions on $f$ and \textcolor{blue}{close to the minimum} Newton's method approximates solution up to an error $\epsilon$ in \textcolor{blue}{$\log \log (1/\epsilon)$} iterations.
   \begin{itemize}
     \item much faster than anything so far..
@@ -250,9 +253,9 @@
       \Vert x_k -x^*  \Vert \le \frac{\mu}{B} {\left( \frac{1}{2} \right)}^{2^k-1}
     \end{equation}
   \end{corollary}
-  Close to the global minimum, we will reach distance to the minumum less than $\epsilon$ in at most $\log \log (1/\epsilon)$ steps.
+  Close to the global minimum, we will reach distance to the minimum less than $\epsilon$ in at most $\log \log (1/\epsilon)$ steps.
 
-  As for the last phase of Babylonian method.
+  \textcolor{gray}{As for the last phase of Babylonian method.}
 \end{frame}
 
 
@@ -349,7 +352,7 @@
   \begin{lemma}%
     Let $f: \R^d \to \R$ be $C^2$ and \textbf{strongly convex} with parameter $\mu$, i.e.\
     \begin{equation}
-      f(y) \ge f(x) \langle \nabla f(x), y-x \rangle + \frac{\mu}{2} \Vert y-x \Vert^2, \quad \forall x,y.
+      f(y) \ge f(x) + \langle \nabla f(x), y-x \rangle + \frac{\mu}{2} \Vert y-x \Vert^2, \quad \forall x,y.
     \end{equation}
   Then, $\nabla^2 f(x)$ is invertible and $\Vert \nabla^2 f(x) \Vert^{-1} \le 1/\mu$ for all $x$.
   \end{lemma}
