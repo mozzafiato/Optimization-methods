@@ -9,4 +9,4 @@ Number of points per exercise
 07:  10/10
 08:  10/10
 09:  10/10
-11:  
+11:  10/10
